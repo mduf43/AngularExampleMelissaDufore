@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h1>Time Cards<small> for {{selectedEmployee.name}} in {{selectedDepartment}}</small></h1>
+</div>
+<div class="col-lg-12">
+	<form class="form-horizontal" role="form">
+		<div class="form-group">
+	<select class="form-control" ng-model="selectedDepartment">
+		  <option ng-repeat="department in departments" value="{{department.name}}" >{{department.name}}</option>
+</select>
+		</div>
+		<div class="form-group">
+	<input type="text" ng-model="selectedEmployee" typeahead="employee as employee.name for employee in employees | filter:$viewValue | limitTo:8" class="form-control">
+</div>
+		</form>
+
+</div>
+<div class="col-lg-8">
+	<h3>From {{startTime|date: "shortDate"}} to {{endTime|date: "shortDate"}}</h3>
+	<table class="table table-striped" ng-repeat="(empKey,employee) in employees| filter: selectedDepartment | filter:selectedEmployee">
+		<tr >
+			<thead>
+				<tr >
+					<th>{{employee.name}} {{employee.department}}</th>
+				</tr>
+			</thead>
+			<tr ng-repeat="(key,val) in employee.clocks">
+				<td>{{val.type}}</td>
+				<td>{{val.time| date:'MM/dd/yyyy @ h:mma' }}</td>
+				<td><a ng-click="removeClock(empKey, key)"><span class="glyphicon glyphicon-remove"></span></a></td>
+			</tr>
+	</table>
+</div>
+<div class="col-lg-4">
+    <div style="display:inline-block; min-height:290px;">
+    	<h3>Start Date</h3>
+      <div class="well well-sm" ng-model="startTime">
+          <datepicker min="minDate" show-weeks="showWeeks"></datepicker>
+      </div>
+    </div>
+        <div style="display:inline-block; min-height:290px;">
+        	<h3>End Date</h3>
+      <div class="well well-sm" ng-model="endTime">
+          <datepicker min="minDate" show-weeks="showWeeks"></datepicker>
+      </div>
+    </div>
+</div>
